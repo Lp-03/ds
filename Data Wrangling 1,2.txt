@@ -1,0 +1,52 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("3_employees.csv")
+df.isnull().sum()
+
+df1 = pd.read_csv("Employee.csv")
+df.isnull().sum()
+
+df = pd.read_csv("Employee_2.csv")
+df.isnull().sum()
+
+df.dtypes
+
+df
+
+df['Age']=df['Age'].astype(float)
+
+df.dtypes
+
+df['Age_z_score']=(df['Age']-df['Age'].mean())/df['Age'].std()
+df['Age_z_score']
+
+import matplotlib.pyplot as plt
+column_name = 'Age'
+
+# Perform Min-Max normalization
+min_val = df[column_name].min()
+max_val = df[column_name].max()
+df[column_name + '_min_max'] = (df[column_name] - min_val) / (max_val - min_val)
+
+# Plot box plot
+plt.figure(figsize=(10,20))
+df[[column_name, column_name + '_min_max']].boxplot()
+plt.title('Box plot of ' + column_name + ' before and after Min-Max normalization')
+plt.ylabel('Values')
+plt.xticks([1, 2], ['Original', 'Min-Max Normalized'])
+plt.show()
+
+df[[column_name,column_name + '_min_max']]
+
+plt.figure(figsize=(8,6))
+df[['Age','Age_z_score']].boxplot()
+plt.xticks([1, 2], ['Original', 'Z-Score'])
+
+
+from sklearn.preprocessing import LabelEncoder
+c =df['City']
+encoder = LabelEncoder()
+
+df['City_Encoded'] = encoder.fit_transform(c)
+df[['City','City_Encoded']]

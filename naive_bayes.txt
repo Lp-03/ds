@@ -1,0 +1,49 @@
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import confusion_matrix,accuracy_score, precision_score, recall_score
+
+df=pd.read_csv("IRIS.csv")
+
+x=df.drop('species',axis=1)
+y=df['species']
+
+x_train,x_test,y_train,y_test =  train_test_split (x,y,test_size=0.2,random_state=42)
+
+print(x_train)
+print(y_test)
+print(y_train)
+print(y_test)
+
+model=GaussianNB()
+model.fit(x_train,y_train)
+
+y_pred=model.predict(x_test)
+y_pred
+
+cm=confusion_matrix(y_test,y_pred)
+print(cm)
+
+TP = cm[1][1]
+FP = cm[0][1]
+TN = cm[0][0]
+FN = cm[1][0]
+
+print(TP)
+print(FP)
+print(TN)
+print(FN)
+
+a=accuracy_score(y_test,y_pred)
+print(a)
+
+error_rate=1-a
+print(error_rate)
+
+
+p=precision_score(y_test,y_pred,average='micro')
+print(p)
+
+rc=recall_score(y_test,y_pred,average='micro')
+print(rc)

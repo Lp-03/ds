@@ -1,0 +1,46 @@
+
+
+
+
+
+
+import numpy as np
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score
+
+# Given data
+X = [[29], [15], [33], [48], [39]]
+y = [0, 0, 1, 1, 1]
+
+# Train logistic regression model
+model = LogisticRegression()
+model.fit(X, y)
+
+# Predict for study hours 25 and 42
+study_hours =[[25], [42]]
+predictions = model.predict(study_hours)
+
+# Compute confusion matrix
+tn, fp, fn, tp = confusion_matrix(y, model.predict(X)).ravel()
+
+# Compute metrics
+accuracy = accuracy_score(y, model.predict(X))
+error_rate = 1 - accuracy
+precision = precision_score(y, model.predict(X))
+recall = recall_score(y, model.predict(X))
+
+# Print results
+print("Logistic Regression Predictions:")
+for i in range(len(study_hours)):
+    print(f"Study Hours: {study_hours[i][0]}, Predicted Outcome: {'Pass' if predictions[i] == 1 else 'Fail'}")
+
+print("\nConfusion Matrix:")
+print("True Negatives:", tn)
+print("False Positives:", fp)
+print("False Negatives:", fn)
+print("True Positives:", tp)
+print("\nMetrics:")
+print("Accuracy:", accuracy)
+print("Error Rate:", error_rate)
+print("Precision:", precision)
+print("Recall:", recall)

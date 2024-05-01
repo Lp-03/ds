@@ -1,0 +1,46 @@
+Data Analytics II
+1. Implement logistic regression using Python/R to perform classification on 
+Social_Network_Ads.csv dataset.
+2. Compute Confusion matrix to find TP, FP, TN, FN, Accuracy, Error rate, 
+Precision, Recall on the given dataset
+
+
+
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import confusion_matrix,accuracy_score,precision_score,recall_score
+
+df=pd.read_csv("Social_Network_Ads.csv")
+
+df["Gender"].replace({"Male":0,"Female":1},inplace=True)
+df
+
+X=df[['User ID', 'Gender', 'Age','EstimatedSalary']]
+y=df['Purchased']
+X_train,X_test,y_train,y_test = train_test_split(X,y,test_size=0.2,random_state=42)
+
+model=LogisticRegression()
+model.fit(X_train,y_train)
+
+y_pred=model.predict(X_test)
+y_pred
+
+model.score(X_train,y_train)
+
+cm=confusion_matrix(y_test,y_pred)
+print(confusion_matrix.__doc__)
+print(cm)
+
+a=accuracy_score(y_test,y_pred)
+print(a)
+
+b=precision_score(y_test,y_pred)
+print(b)
+
+c=recall_score(y_test,y_pred)
+print(c)
+
+error_rate=1- a
+print(error_rate)

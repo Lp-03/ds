@@ -1,0 +1,45 @@
+import nltk
+nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
+nltk.download('stopwords')
+nltk.download('wordnet')
+nltk.download('omw-1.4')
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+from nltk.stem import PorterStemmer, WordNetLemmatizer
+from nltk import pos_tag
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+
+sample_document = "The Boy is playing a cricket"
+
+
+tokens = word_tokenize(sample_document)
+
+pos_tags = pos_tag(tokens)
+
+stop_words = set(stopwords.words('english'))
+filtered_tokens = [word for word in tokens if word.lower() not in stop_words]
+
+stemmer = PorterStemmer()
+stemmed_tokens = [stemmer.stem(word) for word in filtered_tokens]
+
+lemmatizer = WordNetLemmatizer()
+lemmatized_tokens = [lemmatizer.lemmatize(word) for word in filtered_tokens]
+
+tf_vectorizer = TfidfVectorizer(use_idf=False)
+tf_matrix = tf_vectorizer.fit_transform([' '.join(filtered_tokens)])
+
+idf_vectorizer = TfidfVectorizer(use_idf=True)
+idf_matrix = idf_vectorizer.fit_transform([' '.join(filtered_tokens)])
+
+print("Original Text:", sample_document)
+print("Tokens:", tokens)
+print("POS Tags:", pos_tags)
+print("Filtered Tokens (Stop Words Removed):", filtered_tokens)
+print("Stemmed Tokens:", stemmed_tokens)
+print("Lemmatized Tokens:", lemmatized_tokens)
+print("\nTF Matrix:")
+print(tf_matrix.toarray())
+print("\nIDF Matrix:")
+print(idf_matrix.toarray())
